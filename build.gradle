@@ -27,6 +27,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.102.0+1.21.1"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:2.0.4+1.21.1"

@@ -13,12 +13,14 @@ import java.util.WeakHashMap;
 public class DrowningAnimationHandler {
 
     // Unique reference identifier for your custom Blockbench json file
-    private static final ResourceLocation ANIMATION_ID = ResourceLocation.fromNamespaceAndPath("drown_for_real", "drown_panic");
+    private static final ResourceLocation ANIMATION_ID = ResourceLocation.fromNamespaceAndPath("drown_for_real",
+            "drown_panic");
 
     private static final WeakHashMap<LocalPlayer, ModifierLayer<IAnimation>> animationLayers = new WeakHashMap<>();
 
-    public static void clientTick(LocalPlayer player) {
-        if (player == null) return;
+    public static void handleDrowningAnimation(LocalPlayer player) {
+        if (player == null)
+            return;
 
         ModifierLayer<IAnimation> animationLayer = animationLayers.computeIfAbsent(player, p -> {
             var animationStack = PlayerAnimationAccess.getPlayerAnimLayer(p);
@@ -29,10 +31,11 @@ public class DrowningAnimationHandler {
 
         // 2. CHECK CONDITION: Submerged in water and out of oxygen bubbles
         if (player.isUnderWater() && player.getAirSupply() <= 0) {
-            
+
             // If our track isn't playing yet, load it from the asset cache and fire it
             if (!animationLayer.isActive()) {
-                // Pulls the compiled raw json animation data registered under our asset namespace
+                // Pulls the compiled raw json animation data registered under our asset
+                // namespace
                 KeyframeAnimation animData = (KeyframeAnimation) PlayerAnimationRegistry.getAnimation(ANIMATION_ID);
                 if (animData != null) {
                     animationLayer.setAnimation(new KeyframeAnimationPlayer(animData));

@@ -3,7 +3,7 @@
 	"package": "com.jai.drownfr.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"OceanSuckMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
