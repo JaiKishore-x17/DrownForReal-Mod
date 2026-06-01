@@ -10,9 +10,10 @@ public class DrownForRealClient implements ClientModInitializer {
     public void onInitializeClient() {
         // Registering the end of the client tick loop
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.player != null) {
-                // Replace this line with your actual method call that manages player-animation-lib states
-                DrowningAnimationHandler.handleDrowningAnimation(client.player);
+            if (client.level != null) {
+                for (net.minecraft.client.player.AbstractClientPlayer player : client.level.players()) {
+                    DrowningAnimationHandler.handleDrowningAnimation(player);
+                }
             }
         });
     }

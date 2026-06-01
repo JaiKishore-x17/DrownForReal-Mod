@@ -7,23 +7,24 @@ import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import java.util.WeakHashMap;
 import dev.kosmx.playerAnim.core.util.Ease;
+import dev.kosmx.playerAnim.impl.IAnimatedPlayer;
+
 
 public class DrowningAnimationHandler {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final ResourceLocation ANIMATION_ID = ResourceLocation.fromNamespaceAndPath("drown_for_real", "drown_panic");
 
-    private static final WeakHashMap<LocalPlayer, ModifierLayer<IAnimation>> animationLayers = new WeakHashMap<>();
-    private static final WeakHashMap<LocalPlayer, Boolean> isAnimatingState = new WeakHashMap<>();
+    private static final WeakHashMap<AbstractClientPlayer, ModifierLayer<IAnimation>> animationLayers = new WeakHashMap<>();
+    private static final WeakHashMap<AbstractClientPlayer, Boolean> isAnimatingState = new WeakHashMap<>();
 
-    public static void handleDrowningAnimation(LocalPlayer player) {
+    public static void handleDrowningAnimation(AbstractClientPlayer player) {
         if (player == null)
             return;
 
@@ -34,14 +35,17 @@ public class DrowningAnimationHandler {
         }
 
         ModifierLayer<IAnimation> animationLayer = animationLayers.computeIfAbsent(player, p -> {
-            var animationStack = PlayerAnimationAccess.getPlayerAnimLayer(p);
+            var animationStack = ((IAnimatedPlayer) p).getAnimationStack();
             ModifierLayer<IAnimation> layer = new ModifierLayer<>();
             animationStack.addAnimLayer(1000, layer);
             return layer;
         });
 
-        boolean isDrowning = player.isUnderWater() && player.getAirSupply() <= 0;
+        boolean isInWaterContext = player.isEyeInFluid(net.minecraft.tags.FluidTags.WATER) || player.isInWater();
+        boolean isDrowning = isInWaterContext && (player.getAirSupply() <= 0 || player.hurtTime > 0);
         boolean wasAnimating = isAnimatingState.getOrDefault(player, false);
+
+        ((dev.kosmx.playerAnim.impl.IAnimatedPlayer) player).getAnimationStack().tick();
 
         if (isDrowning && !wasAnimating) {
             LOGGER.info("Drowning condition met for player {}: underWater={}, airSupply={}",
