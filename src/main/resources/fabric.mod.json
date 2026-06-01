@@ -3,7 +3,7 @@
 	"id": "drown_for_real",
 	"version": "${version}",
 	"name": "Drown For Real",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Drown For Real adds realistic player panic animations when your underwater oxygen bar hits zero. Built for Fabric, it features custom flailing animations that smoothly blend in and out over a fraction of a second using player-animation-lib, instantly returning your posture to normal once you reach safety.",
 	"authors": [
 		"Me!"
 	],
