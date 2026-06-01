@@ -23,7 +23,7 @@ public abstract class OceanSuckMixin {
             // and dampening X/Z speed to simulate an inability to swim forward efficiently
             player.setDeltaMovement(
                 currentVelocity.x * 0.82, 
-                currentVelocity.y - 0.038, 
+                currentVelocity.y, 
                 currentVelocity.z * 0.82
             );
         }
