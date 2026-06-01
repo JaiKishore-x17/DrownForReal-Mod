@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "drown-for-real",
+	"id": "drown_for_real",
 	"version": "${version}",
 	"name": "Drown For Real",
 	"description": "This is an example description! Tell everyone what your mod is about!",

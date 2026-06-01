@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = 'drown-for-real'
+rootProject.name = 'drown_for_real'
